@@ -17,10 +17,11 @@
                 $table->id();
                 $table->foreignId("offers_id")->constrained()->onDelete('cascade');
                 $table->foreignId("programs_id")->constrained()->onDelete('cascade');
+                $table->foreignId("courses_id")->constrained()->onDelete('cascade');
                 $table->bigInteger("tutors_id")->unsigned();
-                $table->bigInteger("seekers_id")->unsigned();
-                $table->foreign("tutors_id")->references('id')->on('users');
-                $table->foreign("seekers_id")->references('id')->on('users');
+                $table->bigInteger("students_id")->unsigned()->nullable();
+                $table->foreign("tutors_id")->references('id')->on('users')->onDelete('cascade');
+                $table->foreign("students_id")->references('id')->on('users')->onDelete('cascade');
                 $table->date('date_time');
                 $table->boolean('accepted');
                 $table->timestamps();
