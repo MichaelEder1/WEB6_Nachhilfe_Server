@@ -5,7 +5,6 @@
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\BelongsTo;
-    use Illuminate\Database\Eloquent\Relations\HasMany;
 
     class Offer extends Model
     {
@@ -15,7 +14,6 @@
             'offers_id', 'courses_id', 'programs_id', 'users_id'
         ];
 
-        /*Offer belongs to a user */
         public function users(): BelongsTo
         {
             return $this->belongsTo(User::class);
