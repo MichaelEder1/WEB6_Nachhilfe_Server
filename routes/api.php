@@ -32,6 +32,7 @@ Route::delete('/users/{id}', [UserController::class, 'delete']);
 
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{code}', [CourseController::class, 'getCourseByCode']);
+Route::get('/programs/{code}/courses', [CourseController::class, 'getCourseByProgram']);
 Route::post('/courses', [CourseController::class, 'save']);
 Route::put('/courses/{code}', [CourseController::class, 'update']);
 Route::delete('/courses/{code}', [CourseController::class, 'delete']);
@@ -43,6 +44,7 @@ Route::put('/programs/{name}', [ProgramController::class, 'update']);
 Route::delete('/programs/{name}', [ProgramController::class, 'delete']);
 
 Route::get('/offers', [OfferController::class, 'index']);
+Route::get('/offers/{courseCode}', [OfferController::class, 'index']);
 Route::get('/offers/{id}', [OfferController::class, 'getOfferById']);
 Route::post('/offers/', [OfferController::class, 'save']);
 Route::put('/offers/{id}', [OfferController::class, 'update']);

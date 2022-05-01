@@ -10,8 +10,11 @@
     {
         use HasFactory;
 
+        /**
+         * @var mixed|string
+         */
         protected $fillable = [
-            'offers_id', 'courses_id', 'programs_id', 'users_id'
+            'title', 'information', 'isAvailable', 'offers_id', 'courses_id', 'programs_id', 'users_id'
         ];
 
         public function users(): BelongsTo

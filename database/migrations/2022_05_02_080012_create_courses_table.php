@@ -17,6 +17,8 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->string('course_name');
             $table->string('code')->unique();
+            $table->string('image');
+            $table->text('description');
             $table->enum("semester", [1, 2, 3, 4, 5, 6]);
             $table->foreignId('programs_id')->constrained()->onDelete('cascade');
             $table->timestamps();

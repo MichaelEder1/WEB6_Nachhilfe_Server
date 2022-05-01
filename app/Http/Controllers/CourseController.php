@@ -22,6 +22,20 @@ class CourseController extends Controller
         return $course != null ? response()->json($course, 200) : response()->json(null, 200);
     }
 
+    public function getCourseByProgram(string $code): JsonResponse
+    {
+        $res = [];
+        $courses = $this->index();
+        foreach ($courses as $course)
+        {
+            if ($course->programs->program_name == $code)
+            {
+                $res[] = $course;
+            }
+        }
+        return $res != null ? response()->json($res, 200) : response()->json(null, 200);
+    }
+
     public function save(Request $request): JsonResponse
     {
         /**
