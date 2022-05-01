@@ -17,7 +17,7 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'courses_id', 'course_name', 'semester', 'program_id', 'code',
+        'courses_id', 'course_name', 'semester', 'program_id', 'code', 'image', 'description'
     ];
 
     /*Course belongs to a program */
