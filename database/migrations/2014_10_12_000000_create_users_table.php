@@ -19,7 +19,7 @@
                 $table->string('last_name');
                 $table->integer('age');
                 $table->string("photo")->nullable()->default(null);
-                $table->string("mail");
+                $table->string("email");
                 $table->string("password");
                 $table->string("phone_number")->nullable()->default(null);
                 $table->string("education");

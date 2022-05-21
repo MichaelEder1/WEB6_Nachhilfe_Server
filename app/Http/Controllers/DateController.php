@@ -13,13 +13,25 @@ class DateController extends Controller
     public function index()
     {
         /*load all Courses */
-        return Date::with(['students', 'tutors', 'courses', 'programs', 'offers'])->get();
+        return Date::with(['student', 'tutor', 'course', 'program', 'offer'])->get();
     }
 
     public function getDateById(int $id): JsonResponse
     {
-        $date = Date::with(['students', 'tutors', 'courses', 'programs', 'offers'])->where('id', $id)->first();
+        $date = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('offer_id', $id)->get();
         return $date != null ? response()->json($date, 200) : response()->json(null, 200);
+    }
+
+    public function getTutorStuff(int $id): JsonResponse
+    {
+        $tutorStuff = Date::with(['students', 'tutor', 'course', 'program', 'offer'])->where('tutor_id', $id)->get();
+        return $tutorStuff != null ? response()->json($tutorStuff, 200) : response()->json(null, 200);
+    }
+
+    public function getStudentStuff(int $id): JsonResponse
+    {
+        $studentStuff = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('student_id', $id)->get();
+        return $studentStuff != null ? response()->json($studentStuff, 200) : response()->json(null, 200);
     }
 
     public function save(Request $request): JsonResponse
@@ -30,11 +42,11 @@ class DateController extends Controller
         DB::beginTransaction();
         try {
             $date = new Date();
-            $date->courses_id = $request->courses_id;
-            $date->programs_id = $request->programs_id;
-            $date->offers_id = $request->programs_id;
-            $date->tutors_id = $request->tutors_id;
-            $date->students_id = $request->students_id;
+            $date->course_id = $request->courses_id;
+            $date->program_id = $request->programs_id;
+            $date->offer_id = $request->programs_id;
+            $date->tutor_id = $request->tutors_id;
+            $date->student_id = $request->students_id;
             $date->date_time = $request->date_time;
             $date->accepted = $request->accepted;
             $date->save();
@@ -50,13 +62,13 @@ class DateController extends Controller
     {
         DB::beginTransaction();
         try {
-            $date = Date::with(['students', 'tutors', 'courses', 'programs', 'offers'])->where('id', $id)->first();
+            $date = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('id', $id)->first();
             if ($date != null) {
                 $date->update($request->all());
                 $date->save();
             }
             DB::commit();
-            $date1 = Date::with(['students', 'tutors', 'courses', 'programs', 'offers'])->where('id', $id)->first();
+            $date1 = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('id', $id)->first();
             // return a vaild http response
             return response()->json($date1, 201);
         } catch (Exception $e) {
@@ -68,13 +80,13 @@ class DateController extends Controller
 
     public function delete(int $id): JsonResponse
     {
-        $date = Date::with(['students', 'tutors', 'courses', 'programs', 'offers'])->where('id', $id)->first();
+        $date = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('id', $id)->first();
         if ($date != null) {
             $date->delete();
         } else {
             throw Exception('Date could not be deleted - it doesn\'t exist');
         }
-        $course = $date->courses()->first()->course_name;
+        $course = $date->course()->first()->course_name;
         $courseDate = $date->date_time;
         return response()->json('Date (' . $course . ' - ' . $courseDate . ') succesfully deleted', 200);
     }

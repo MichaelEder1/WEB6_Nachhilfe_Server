@@ -13,13 +13,31 @@ class CourseController extends Controller
     public function index()
     {
         /*load all Courses */
-        return Course::with(['programs'])->get();
+        return Course::with(['program'])->get();
     }
 
     public function getCourseByCode(string $code): JsonResponse
     {
-        $course = Course::where('code', $code)->with(['programs'])->first();
+        $course = Course::where('code', $code)->with(['program'])->first();
         return $course != null ? response()->json($course, 200) : response()->json(null, 200);
+    }
+
+    public function getCourseById(int $id): JsonResponse
+    {
+        $course = Course::where('id', $id)->with(['program'])->first();
+        return $course != null ? response()->json($course, 200) : response()->json(null, 200);
+    }
+
+    public function getCourseByProgram(string $code): JsonResponse
+    {
+        $res = [];
+        $courses = $this->index();
+        foreach ($courses as $course) {
+            if ($course->program->program_name == $code) {
+                $res[] = $course;
+            }
+        }
+        return $res != null ? response()->json($res, 200) : response()->json(null, 200);
     }
 
     public function save(Request $request): JsonResponse
@@ -32,7 +50,7 @@ class CourseController extends Controller
             $course = new Course();
             $course->course_name = $request->course_name;
             $course->semester = $request->semester;
-            $course->programs_id = $request->programs_id;
+            $course->program_id = $request->programs_id;
             $course->code = $request->code;
             $course->save();
             DB::commit();
@@ -47,14 +65,14 @@ class CourseController extends Controller
     {
         DB::beginTransaction();
         try {
-            $course = Course::with(['programs'])
+            $course = Course::with(['program'])
                 ->where('code', $code)->first();
             if ($course != null) {
                 $course->update($request->all());
                 $course->save();
             }
             DB::commit();
-            $course1 = Course::with(['programs'])
+            $course1 = Course::with(['program'])
                 ->where('code', $code)->first();
             // return a vaild http response
             return response()->json($course1, 201);

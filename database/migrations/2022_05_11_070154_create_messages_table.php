@@ -17,13 +17,13 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->string('text');
             $table->date('date_time');
-            $table->bigInteger("tutors_id")->unsigned()->nullable();
-            $table->bigInteger("students_id")->unsigned()->nullable();
-            $table->foreign("tutors_id")->references('id')->on('users')->onDelete('set null');
-            $table->foreign("students_id")->references('id')->on('users')->onDelete('set null');
-            $table->foreignId('courses_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('offers_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('programs_id')->nullable()->constrained()->onDelete('set null');
+            $table->bigInteger("tutor_id")->unsigned()->nullable();
+            $table->bigInteger("student_id")->unsigned()->nullable();
+            $table->foreign("tutor_id")->references('id')->on('users')->onDelete('set null');
+            $table->foreign("student_id")->references('id')->on('users')->onDelete('set null');
+            $table->foreignId('course_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('offer_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('program_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

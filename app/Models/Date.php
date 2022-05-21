@@ -1,45 +1,44 @@
 <?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use Illuminate\Database\Eloquent\Factories\HasFactory;
-    use Illuminate\Database\Eloquent\Model;
-    use Illuminate\Database\Eloquent\Relations\BelongsTo;
-    use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-    class Date extends Model
+class Date extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'date_id', 'tutor_id', 'student_id', 'course_id', 'program_id', 'accepted', 'date_time', 'offer_id'
+    ];
+
+    public function tutor(): BelongsTo
     {
-        use HasFactory;
-
-        protected $fillable = [
-            'dates_id', 'tutors_id', 'students_id', 'courses_id', 'programs_id', 'accepted', 'date_time', 'offers_id'
-        ];
-
-        public function tutors(): BelongsTo
-        {
-            return $this->belongsTo(User::class, 'tutors_id', 'id');
-        }
-
-        public function students(): Belongsto
-        {
-            return $this->belongsTo(User::class, 'students_id', 'id');
-        }
-
-        /*Date belongs to a program*/
-        public function programs(): BelongsTo
-        {
-            return $this->belongsTo(Program::class);
-        }
-
-        /*Date belongs to an offer */
-        public function offers(): BelongsTo
-        {
-            return $this->belongsTo(Offer::class);
-        }
-
-        /*Date belongs to a course */
-        public function courses(): BelongsTo
-        {
-            return $this->belongsTo(Course::class);
-        }
+        return $this->belongsTo(User::class, 'tutor_id', 'id');
     }
+
+    public function student(): Belongsto
+    {
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
+
+    /*Date belongs to a program*/
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    /*Date belongs to an offer */
+    public function offer(): BelongsTo
+    {
+        return $this->belongsTo(Offer::class);
+    }
+
+    /*Date belongs to a course */
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
+    }
+}

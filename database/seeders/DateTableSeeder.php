@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Date;
 use App\Models\Offer;
-use App\Models\User;
 use DateTime;
 use Illuminate\Database\Seeder;
 
@@ -21,18 +20,18 @@ class DateTableSeeder extends Seeder
 
         $offer1 = Offer::all()->first();
 
-        $course1 = $offer1->courses()->first();
-        $program1 = $offer1->programs()->first();
-        $tutor = $offer1->users()->first();
-        $student = User::all()->skip(1)->first();
+        $course1 = $offer1->course()->first();
+        $program1 = $offer1->program()->first();
+        $tutor = $offer1->user()->first();
+        $student = null;
 
         $date1->accepted = false;
         $date1->date_time = new DateTime();
-        $date1->offers()->associate($offer1);
-        $date1->courses()->associate($course1);
-        $date1->programs()->associate($program1);
-        $date1->students()->associate($student);
-        $date1->tutors()->associate($tutor);
+        $date1->offer()->associate($offer1);
+        $date1->course()->associate($course1);
+        $date1->program()->associate($program1);
+        $date1->student()->associate($student);
+        $date1->tutor()->associate($tutor);
         $date1->save();
     }
 }

@@ -13,12 +13,12 @@ class MessageController extends Controller
     public function index()
     {
         /* load all messages */
-        return Message::with(['students', 'tutors', 'courses', 'programs', 'offers'])->get();
+        return Message::with(['student', 'tutor', 'course', 'program', 'offer'])->get();
     }
 
     public function getMessageById(int $id): JsonResponse
     {
-        $message = Message::with(['students', 'tutors', 'courses', 'programs', 'offers'])->where('id', $id)->first();
+        $message = Message::with(['student', 'tutor', 'course', 'program', 'offer'])->where('id', $id)->first();
         return $message != null ? response()->json($message, 200) : response()->json(null, 200);
     }
 
@@ -32,11 +32,11 @@ class MessageController extends Controller
             $message = new Message();
             $message->text = $request->text;
             $message->date_time = $request->date_time;
-            $message->programs_id = $request->programs_id;
-            $message->students_id = $request->students_id;
-            $message->tutors_id = $request->tutors_id;
-            $message->courses_id = $request->courses_id;
-            $message->offers_id = $request->offers_id;
+            $message->program_id = $request->programs_id;
+            $message->student_id = $request->students_id;
+            $message->tutor_id = $request->tutors_id;
+            $message->course_id = $request->courses_id;
+            $message->offer_id = $request->offers_id;
             $message->save();
             DB::commit();
             return response()->json($message, 200);
@@ -50,14 +50,14 @@ class MessageController extends Controller
     {
         DB::beginTransaction();
         try {
-            $message = Message::with(['students', 'tutors', 'courses', 'programs', 'offers'])
+            $message = Message::with(['student', 'tutor', 'course', 'program', 'offer'])
                 ->where('id', $id)->first();
             if ($message != null) {
                 $message->update($request->all());
                 $message->save();
             }
             DB::commit();
-            $message1 = Message::with(['programs'])
+            $message1 = Message::with(['program'])
                 ->where('id', $id)->first();
             // return a vaild http response
             return response()->json($message1, 201);

@@ -15,14 +15,14 @@ class CreateDatesTable extends Migration
     {
         Schema::create('dates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("offers_id")->constrained()->onDelete('cascade');
-            $table->foreignId("programs_id")->constrained()->onDelete('cascade');
-            $table->foreignId("courses_id")->constrained()->onDelete('cascade');
-            $table->bigInteger("tutors_id")->unsigned();
-            $table->bigInteger("students_id")->unsigned()->nullable()->default(null);
-            $table->foreign("tutors_id")->references('id')->on('users')->onDelete('cascade');
-            $table->foreign("students_id")->references('id')->on('users')->onDelete('set null');
-            $table->date('date_time');
+            $table->foreignId("offer_id")->constrained()->onDelete('cascade');
+            $table->foreignId("program_id")->constrained()->onDelete('cascade');
+            $table->foreignId("course_id")->constrained()->onDelete('cascade');
+            $table->bigInteger("tutor_id")->unsigned();
+            $table->bigInteger("student_id")->unsigned()->nullable()->default(null);
+            $table->foreign("tutor_id")->references('id')->on('users')->onDelete('cascade');
+            $table->foreign("student_id")->references('id')->on('users')->onDelete('set null');
+            $table->dateTime('date_time');
             $table->boolean('accepted');
             $table->timestamps();
         });

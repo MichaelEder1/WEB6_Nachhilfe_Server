@@ -17,11 +17,11 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'courses_id', 'course_name', 'semester', 'program_id', 'code',
+        'course_id', 'course_name', 'semester', 'program_id', 'code', 'image', 'description'
     ];
 
     /*Course belongs to a program */
-    public function programs(): BelongsTo
+    public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
     }

@@ -11,33 +11,33 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
-        'messages_id', 'tutors_id', 'students_id', 'courses_id', 'programs_id', 'date_time', 'offers_id', 'text'
+        'message_id', 'tutor_id', 'student_id', 'course_id', 'program_id', 'date_time', 'offer_id', 'text'
     ];
 
-    public function tutors(): BelongsTo
+    public function tutor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'tutors_id', 'id');
+        return $this->belongsTo(User::class, 'tutor_id', 'id');
     }
 
-    public function students(): Belongsto
+    public function student(): Belongsto
     {
-        return $this->belongsTo(User::class, 'students_id', 'id');
+        return $this->belongsTo(User::class, 'student_id', 'id');
     }
 
     /*Date belongs to a program*/
-    public function programs(): BelongsTo
+    public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
     }
 
     /*Date belongs to an offer */
-    public function offers(): BelongsTo
+    public function offer(): BelongsTo
     {
         return $this->belongsTo(Offer::class);
     }
 
     /*Date belongs to a course */
-    public function courses(): BelongsTo
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }

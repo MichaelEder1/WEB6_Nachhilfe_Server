@@ -22,6 +22,12 @@ class ProgramController extends Controller
         return $program != null ? response()->json($program, 200) : response()->json(null, 200);
     }
 
+    public function getProgramById(int $id): JsonResponse
+    {
+        $program = Program::where('id', $id)->first();
+        return $program != null ? response()->json($program, 200) : response()->json(null, 200);
+    }
+
     public function save(Request $request): JsonResponse
     {
         /**
