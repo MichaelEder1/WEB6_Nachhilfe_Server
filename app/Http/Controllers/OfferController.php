@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Date;
 use App\Models\Offer;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -20,14 +21,6 @@ class OfferController extends Controller
     {
         $offer = Offer::where('id', $id)->with(['user', 'course', 'program', 'dates'])->first();
         return $offer != null ? response()->json($offer, 200) : response()->json(null, 200);
-        /*$offer = DB::table('offers')
-            ->join('dates', 'offers.id', '=', 'dates.offers_id')
-            ->join('programs', 'offers.programs_id', '=', 'programs.id')
-            ->join('courses', 'offers.courses_id', '=', 'courses.id')
-            ->join('users', 'offers.users_id', '=', 'users.id')
-            ->where('offers.id', $id)
-            ->get();
-        return $offer != null ? response()->json($offer, 200) : response()->json(null, 200);*/
     }
 
     public function getOffersByCourse(string $code): JsonResponse
@@ -52,11 +45,26 @@ class OfferController extends Controller
             $offer = new Offer();
             $offer->title = $request->title;
             $offer->information = $request->information;
-            $offer->course_id = $request->course;
-            $offer->program_id = $request->program;
+            $offer->course_id = $request->course_id;
+            $offer->program_id = $request->program_id;
             $offer->user_id = $request->userId;
             $offer->isAvailable = $request->isAvailable;
             $offer->save();
+
+            if (isset($request['dates']) && is_array($request['dates'])) {
+                foreach ($request['dates'] as $date) {
+                    $newDate = Date::firstOrNew([
+                        'offer_id' => $offer->id,
+                        'program_id' => $request->program_id,
+                        'course_id' => $request->course_id,
+                        'tutor_id' => $request->userId,
+                        'student_id' => null,
+                        'accepted' => false,
+                        'date_time' => $date['date_time']
+                    ]);
+                    $newDate->save();
+                }
+            }
             DB::commit();
             return response()->json($offer, 200);
         } catch (Exception $e) {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Offer extends Model
 {
@@ -35,8 +36,8 @@ class Offer extends Model
     }
 
     /*Offer belongs to a date */
-    public function dates(): BelongsTo
+    public function dates(): HasMany
     {
-        return $this->belongsTo(Date::class);
+        return $this->hasMany(Date::class);
     }
 }
