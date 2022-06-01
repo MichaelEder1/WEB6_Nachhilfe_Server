@@ -23,6 +23,12 @@ class OfferController extends Controller
         return $offer != null ? response()->json($offer, 200) : response()->json(null, 200);
     }
 
+    public function getOfferByUserId(int $id): JsonResponse
+    {
+        $offer = Offer::where('user_id', $id)->with(['user', 'course', 'program', 'dates'])->get();
+        return $offer != null ? response()->json($offer, 200) : response()->json(null, 200);
+    }
+
     public function getOffersByCourse(string $code): JsonResponse
     {
         $res = [];
@@ -77,13 +83,34 @@ class OfferController extends Controller
     {
         DB::beginTransaction();
         try {
-            $offer = Offer::with(['user', 'course', 'program'])->where('id', $id)->first();
+            $offer = Offer::with(['user', 'course', 'program', 'dates'])->where('id', $id)->first();
             if ($offer != null) {
-                $offer->update($request->all());
+                $offer->title = $request->title;
+                $offer->information = $request->information;
+                $offer->course_id = $request->course_id;
+                $offer->program_id = $request->program_id;
+                $offer->user_id = $request->userId;
+                $offer->isAvailable = $request->isAvailable;
                 $offer->save();
+
+                if (isset($request['dates']) && is_array($request['dates'])) {
+                    $existingDate = Date::with('offer')->where("offer_id", $offer->id)->delete();
+                    foreach ($request['dates'] as $date) {
+                        $newDate = Date::firstOrNew([
+                            'offer_id' => $offer->id,
+                            'program_id' => $request->program_id,
+                            'course_id' => $request->course_id,
+                            'tutor_id' => $request->userId,
+                            'student_id' => null,
+                            'accepted' => false,
+                            'date_time' => $date['date_time']
+                        ]);
+                        $newDate->save();
+                    }
+                }
             }
             DB::commit();
-            $offer1 = Offer::with(['user', 'course', 'program'])->where('id', $id)->first();
+            $offer1 = Offer::with(['user', 'course', 'program', 'dates'])->where('id', $id)->first();
             // return a vaild http response
             return response()->json($offer1, 201);
         } catch (Exception $e) {

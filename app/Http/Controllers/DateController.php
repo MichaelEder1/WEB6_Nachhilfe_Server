@@ -24,7 +24,7 @@ class DateController extends Controller
 
     public function getTutorStuff(int $id): JsonResponse
     {
-        $tutorStuff = Date::with(['students', 'tutor', 'course', 'program', 'offer'])->where('tutor_id', $id)->get();
+        $tutorStuff = Date::with(['student', 'tutor', 'course', 'program', 'offer'])->where('tutor_id', $id)->get();
         return $tutorStuff != null ? response()->json($tutorStuff, 200) : response()->json(null, 200);
     }
 

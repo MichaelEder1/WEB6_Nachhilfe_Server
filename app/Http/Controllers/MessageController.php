@@ -22,6 +22,18 @@ class MessageController extends Controller
         return $message != null ? response()->json($message, 200) : response()->json(null, 200);
     }
 
+    public function getMessagesByTutor(int $id): JsonResponse
+    {
+        $message = Message::with(['student', 'tutor', 'course', 'program', 'offer'])->where('tutor_id', $id)->get();
+        return $message != null ? response()->json($message, 200) : response()->json(null, 200);
+    }
+
+    public function getMessagesByStudent(int $id): JsonResponse
+    {
+        $message = Message::with(['student', 'tutor', 'course', 'program', 'offer'])->where('student_id', $id)->get();
+        return $message != null ? response()->json($message, 200) : response()->json(null, 200);
+    }
+
     public function save(Request $request): JsonResponse
     {
         /**
@@ -32,11 +44,11 @@ class MessageController extends Controller
             $message = new Message();
             $message->text = $request->text;
             $message->date_time = $request->date_time;
-            $message->program_id = $request->programs_id;
-            $message->student_id = $request->students_id;
-            $message->tutor_id = $request->tutors_id;
-            $message->course_id = $request->courses_id;
-            $message->offer_id = $request->offers_id;
+            $message->program_id = $request->program_id;
+            $message->student_id = $request->student_id;
+            $message->tutor_id = $request->tutor_id;
+            $message->course_id = $request->course_id;
+            $message->offer_id = $request->offer_id;
             $message->save();
             DB::commit();
             return response()->json($message, 200);

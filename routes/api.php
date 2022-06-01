@@ -40,6 +40,7 @@ Route::get('/programs/{name}', [ProgramController::class, 'getProgramByName']);
 Route::get('/offers', [OfferController::class, 'index']);
 Route::get('/course/{code}/offers', [OfferController::class, 'getOffersByCourse']);
 Route::get('/offers/{id}', [OfferController::class, 'getOfferById']);
+Route::get('/offers/user/{id}', [OfferController::class, 'getOfferByUserId']);
 
 Route::get('/dates', [DateController::class, 'index']);
 Route::get('/dates/{id}', [DateController::class, 'getDateById']);
@@ -48,7 +49,8 @@ Route::get('/profile/studentinfos/{id}', [DateController::class, 'getStudentStuf
 
 Route::get('/messages', [MessageController::class, 'index']);
 Route::get('/messages/{id}', [MessageController::class, 'getMessageById']);
-Route::post('/messages', [MessageController::class, 'save']);
+Route::get('/messages/tutor/{id}', [MessageController::class, 'getMessagesByTutor']);
+Route::get('/messages/student/{id}', [MessageController::class, 'getMessagesByStudent']);
 
 Route::post('auth/login', [AuthController::class, 'login']);
 
@@ -75,4 +77,6 @@ Route::group(['middleware' => ['api', 'auth.jwt']], function () {
 
     Route::put('/messages/{id}', [MessageController::class, 'update']);
     Route::delete('/messages/{id}', [MessageController::class, 'delete']);
+    Route::post('/messages', [MessageController::class, 'save']);
+
 });
