@@ -50,7 +50,7 @@ class CourseController extends Controller
             $course = new Course();
             $course->course_name = $request->course_name;
             $course->semester = $request->semester;
-            $course->program_id = $request->programs_id;
+            $course->programs_id = $request->programs_id;
             $course->code = $request->code;
             $course->save();
             DB::commit();
